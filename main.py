@@ -28,12 +28,13 @@ def appendDocument(PROFILE, API_KEY, API_SECRET_KEY, ACCESS_TOKEN, ACCESS_TOKEN_
             can_create = False
             app.setLabel("pfl-create-response", "Profile has already been created in that slot")
     if can_create:
-        try:
-            f = open("tbs_save.txt")
+        if PROFILE == "" or API_KEY == "" or API_SECRET_KEY == "" or ACCESS_TOKEN == "" or ACCESS_TOKEN_SECRET == "":
+            app.setLabel("pfl-create-response", "Cannot create empty profile")
+        else:
+            f = open("tbs_save.txt", "a")
             f.write(PROFILE+","+API_KEY+","+API_SECRET_KEY+","+ACCESS_TOKEN+","+ACCESS_TOKEN_SECRET+"\n")
             f.close()
-        except:
-            app.setLabel("pfl-create-response", "Cannot create empty profile")
+            app.setLabel("pfl-create-response", "Created profile")
 
 
 # return documents
@@ -43,9 +44,10 @@ def returnDocument(PROFILE):
             data = [data.strip().split(",") for data in textFile]
         for i in range(len(data)):
             if PROFILE == data[i][0]:
-                return data[i]
-            else:
-                app.setLabel("pfl-response", "No profile has been created")
+                if data[i] is None:
+                    app.setLabel("pfl-response", "No profile has been created")
+                else:
+                    return data[i]
     except:
         app.setLabel("pfl-response", "No profile has been created")
 
