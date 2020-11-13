@@ -43,11 +43,10 @@ def returnDocument(PROFILE):
         with open("tbs_save.txt") as textFile:
             data = [data.strip().split(",") for data in textFile]
         for i in range(len(data)):
-            if PROFILE == data[i][0]:
-                if data[i] is None:
-                    app.setLabel("pfl-response", "No profile has been created")
-                else:
-                    return data[i]
+            if data[i][0] == PROFILE:
+                return data[i]
+            else:
+                app.setLabel("pfl-response", "No profile has been created")
     except:
         app.setLabel("pfl-response", "No profile has been created")
 
