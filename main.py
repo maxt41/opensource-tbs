@@ -41,9 +41,8 @@ def appendDocument(PROFILE, API_KEY, API_SECRET_KEY, ACCESS_TOKEN, ACCESS_TOKEN_
 
 
 def deleteDocument(TO_DELETE):
-    f = open("tbs_save.txt", "r")
-    data = f.read()
-    f.close()
+    with open("tbs_save.txt",) as textFile:
+        data = [data.strip().split(",") for data in textFile]
     print(data)
 
 
