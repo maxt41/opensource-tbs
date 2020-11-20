@@ -21,7 +21,7 @@ update_thread.start()
 # create documents
 def appendDocument(PROFILE, API_KEY, API_SECRET_KEY, ACCESS_TOKEN, ACCESS_TOKEN_SECRET):
     can_create = True
-    with open("tbs_save.txt") as textFile:
+    with open("tbs_save.txt", "a+") as textFile:
         data = [data.strip().split(",") for data in textFile]
     for i in range(len(data)):
         if PROFILE == data[i][0]:
@@ -31,10 +31,20 @@ def appendDocument(PROFILE, API_KEY, API_SECRET_KEY, ACCESS_TOKEN, ACCESS_TOKEN_
         if PROFILE == "" or API_KEY == "" or API_SECRET_KEY == "" or ACCESS_TOKEN == "" or ACCESS_TOKEN_SECRET == "":
             app.setLabel("pfl-create-response", "Cannot create empty profile")
         else:
-            f = open("tbs_save.txt", "a")
-            f.write(PROFILE+","+API_KEY+","+API_SECRET_KEY+","+ACCESS_TOKEN+","+ACCESS_TOKEN_SECRET+"\n")
-            f.close()
-            app.setLabel("pfl-create-response", "Created profile")
+            if PROFILE in ["1", "2"]:
+                f = open("tbs_save.txt", "a")
+                f.write(PROFILE+","+API_KEY+","+API_SECRET_KEY+","+ACCESS_TOKEN+","+ACCESS_TOKEN_SECRET+"\n")
+                f.close()
+                app.setLabel("pfl-create-response", "Created profile")
+            else:
+                app.setLabel("pfl-create-response", "Cannot create in a profile that does not exist.")
+
+
+def deleteDocument(TO_DELETE):
+    f = open("tbs_save.txt", "r")
+    data = f.read()
+    f.close()
+    print(data)
 
 
 # return documents
@@ -44,9 +54,11 @@ def returnDocument(PROFILE):
             data = [data.strip().split(",") for data in textFile]
         for i in range(len(data)):
             if data[i][0] == PROFILE:
-                return data[i]
-            else:
-                app.setLabel("pfl-response", "No profile has been created")
+                return_data = data[i]
+        if return_data is None:
+            app.setLabel("pfl-response", "No profile has been created")
+        else:
+            return return_data
     except:
         app.setLabel("pfl-response", "No profile has been created")
 
@@ -123,4 +135,5 @@ app.stopFrame()
 app.stopSubWindow()
 
 if __name__ == "__main__":
+    deleteDocument("1")
     app.go()
