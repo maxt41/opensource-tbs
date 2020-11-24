@@ -1,6 +1,7 @@
 import appJar
 from time import sleep
 import threading
+from bot import Bot
 
 
 # defining threads
@@ -65,7 +66,9 @@ def returnDocument(PROFILE):
 def profileMenu(button):
     if button == "Profile 1":
         userdata = returnDocument("1")
-        print(userdata)
+        bot1 = Bot(userdata[1], userdata[2], userdata[3], userdata[4])
+        bot1.verify()
+        
     if button == "Profile 2":
         userdata = returnDocument("2")
         print(userdata)
@@ -134,5 +137,5 @@ app.stopFrame()
 app.stopSubWindow()
 
 if __name__ == "__main__":
-    deleteDocument("1")
+    #deleteDocument("1")
     app.go()
